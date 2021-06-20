@@ -8,11 +8,9 @@ package DTTT.view;
 import DTTT.controller.ChuyenManHinh;
 import DTTT.dao.DBConnect;
 import DTTT.dao.KTTK;
-import DTTT.model.ThongTinPhong;
 import DTTT.model.ThongTinTin;
 import java.io.File;
 import java.io.FileOutputStream;
-import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,16 +18,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -118,7 +111,6 @@ public class CapNhatMenu extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jbtXuatFile = new javax.swing.JButton();
-        jbtChinhSuaTK = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(960, 640));
 
@@ -204,17 +196,6 @@ public class CapNhatMenu extends javax.swing.JPanel {
             }
         });
 
-        jbtChinhSuaTK.setBackground(new java.awt.Color(76, 175, 80));
-        jbtChinhSuaTK.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jbtChinhSuaTK.setForeground(new java.awt.Color(255, 255, 255));
-        jbtChinhSuaTK.setText("Chỉnh sửa TK");
-        jbtChinhSuaTK.setBorder(null);
-        jbtChinhSuaTK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtChinhSuaTKActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -229,8 +210,6 @@ public class CapNhatMenu extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbtChinhSuaTK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbtThemTinMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -238,13 +217,12 @@ public class CapNhatMenu extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtThemTinMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtChinhSuaTK, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(25, 25, 25))
@@ -342,13 +320,6 @@ public class CapNhatMenu extends javax.swing.JPanel {
     private void jbtXuatFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatFileActionPerformed
         
     }//GEN-LAST:event_jbtXuatFileActionPerformed
-
-    private void jbtChinhSuaTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtChinhSuaTKActionPerformed
-        SuaTKDialog suaTK = new SuaTKDialog(null, true);
-        suaTK.setTitle("Chỉnh sửa tài khoản");
-        suaTK.setLocationRelativeTo(null);
-        suaTK.setVisible(true);
-    }//GEN-LAST:event_jbtChinhSuaTKActionPerformed
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -356,7 +327,6 @@ public class CapNhatMenu extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JButton jbtChinhSuaTK;
     private javax.swing.JButton jbtThemTinMoi;
     private javax.swing.JButton jbtXuatFile;
     private javax.swing.JTextField jtfTimKiem;

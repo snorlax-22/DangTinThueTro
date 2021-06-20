@@ -19,7 +19,7 @@ public class ThongTinDB {
          
         Connection conn = DBConnect.getConnection();
         String sql = "INSERT INTO Thong_Tin_Tin(MaTin,TieuDe,SDTTin,NgayDang,AnNinh,MaXa,ThongTinDiaChi,TrangThai,TaiKhoan) VALUES (?,?,?,?,?,?,?,?,?)";
-        String sql1 = "INSERT INTO Thong_Tin_Phong(MaTin,MaLoaiPhong,TenPhong,SoPhong,DienTich,GiaPhong,DieuHoa,MoTa) VALUES (?,?,?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO Thong_Tin_Phong(MaTin,MaLoaiPhong,SoPhong,DienTich,GiaPhong,DieuHoa,MoTa) VALUES (?,?,?,?,?,?,?)";
         String sql2 = "INSERT INTO Hinh_Anh VALUES(?,?,?)";
         
         PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -39,12 +39,11 @@ public class ThongTinDB {
              
              ps1.setString(1, maTin);
              ps1.setString(2, ttp.getMaLoaiPhong());
-             ps1.setString(3, ttp.getTenLoaiPhong());
-             ps1.setInt(4, ttp.getSoPhong());
-             ps1.setString(5, ttp.getDienTich());
-             ps1.setString(6, ttp.getGiaPhong());
-             ps1.setString(7, ttp.getDieuHoa());
-             ps1.setString(8, ttp.getMoTa());
+             ps1.setInt(3, ttp.getSoPhong());
+             ps1.setString(4, ttp.getDienTich());
+             ps1.setString(5, ttp.getGiaPhong());
+             ps1.setString(6, ttp.getDieuHoa());
+             ps1.setString(7, ttp.getMoTa());
              
              ps1.executeUpdate();
          

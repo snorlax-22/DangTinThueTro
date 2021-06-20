@@ -4,7 +4,6 @@ package DTTT.dao;
 import DTTT.model.Anh;
 import DTTT.model.TaiKhoan;
 import DTTT.model.ThongTinTin;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -53,28 +52,12 @@ public class TinDAOImpl implements TinDAO{
         } 
         return null;
     }
-    public static void setTrangThai(String MaTin) throws SQLException,SQLServerException{
+    public static void setTrangThai(String MaTin) throws SQLException{
         
         Connection conn = DBConnect.getConnection();
         String sql = "UPDATE Thong_Tin_Tin SET TrangThai = 0 WHERE MaTin = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1,MaTin);
-        int rs = ps.executeUpdate();
-        conn.close();
-        
-    }
-    
-    public static void deleteEmptyrRoom() throws SQLException,SQLServerException{
-        
-        Connection conn = DBConnect.getConnection();
-        String sql = "WITH c as\n"
-                + "(SELECT Thong_Tin_Tin.MaTin,Thong_Tin_Phong.SoPhong,Thong_Tin_Tin.TrangThai\n"
-                + "FROM Thong_Tin_Phong, Thong_Tin_Tin\n"
-                + "Where Thong_Tin_Phong.MaTin = Thong_Tin_Tin.MaTin)\n"
-                + "UPDATE c\n"
-                + "SET TrangThai = 0\n"
-                + "WHERE SoPhong = 0";
-        PreparedStatement ps = conn.prepareStatement(sql);
         int rs = ps.executeUpdate();
         conn.close();
         
@@ -209,15 +192,6 @@ public class TinDAOImpl implements TinDAO{
         }
         return GiaPhong;
     }
-    
-//    WITH c as
-//(SELECT Thong_Tin_Tin.MaTin,Thong_Tin_Phong.SoPhong,Thong_Tin_Tin.TrangThai
-//FROM Thong_Tin_Phong, Thong_Tin_Tin
-//Where Thong_Tin_Phong.MaTin = Thong_Tin_Tin.MaTin)
-//SELECT TrangThai, MaTin
-//FROM c
-//WHERE SoPhong = 0
-    
 }
 
 

@@ -1,23 +1,25 @@
 package DTTT.view;
 import DTTT.bean.DanhMuc;
 import DTTT.controller.ChuyenManHinh;
+import DTTT.dao.KTTK;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List; 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class MainScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form MainScreen
      */
-    public MainScreen() throws IOException { 
+    public MainScreen() throws IOException, SQLException { 
         initComponents();       
         this.setVisible(true);
         this.setBounds(0,0,1520,800);
         setTitle("DỊCH VỤ ĐĂNG TIN PHÒNG TRỌ!");
         ChuyenManHinh controller = new ChuyenManHinh(jpnView);
+        String a;
         controller.setView();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         List<DanhMuc> listItem = new ArrayList<>();
@@ -40,6 +42,7 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JMainLBSteTK = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jpnMenu = new javax.swing.JPanel();
@@ -313,6 +316,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel DangNhap_Label;
     private javax.swing.JPanel DangNhap_Panel;
     private javax.swing.JPanel DatLichHen_Panel;
+    private javax.swing.JLabel JMainLBSteTK;
     private javax.swing.JLabel LichHen_Label;
     private javax.swing.JPanel LichHen_Panel;
     private javax.swing.JLabel ThongKe_Label;

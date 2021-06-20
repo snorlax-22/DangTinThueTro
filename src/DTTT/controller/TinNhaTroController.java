@@ -78,8 +78,6 @@ public class TinNhaTroController {
     DecimalFormat formatter = new DecimalFormat("###,###,###");
     
     PhongJDialog jdialog = new PhongJDialog(tinphong, lp);
-//    PhongJDialog jdialog = new PhongJDialog(tinphong, lp);
-//    PhongJFrame frame = new PhongJFrame(tinphong);
     private ClassTableModel classTableModel = null;
     
     private final String[] COLUMNS = {"Mã tin","Ảnh", "Tiêu đề",
@@ -244,7 +242,7 @@ public class TinNhaTroController {
                     // set thông số cho jdialog
                     jdialog.setTitle(TieuDe);
                     jdialog.setVisible(false);
-                    jdialog.setBounds(90, 90, 800, 490);
+                    jdialog.setBounds(90, 90,730, 440);
                     jdialog.setLocationRelativeTo(null);
                     jdialog.setVisible(true);
                     

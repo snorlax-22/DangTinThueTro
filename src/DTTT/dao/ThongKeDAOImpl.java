@@ -40,6 +40,7 @@ public class ThongKeDAOImpl implements ThongKeDAO{
     public List<LoaiPhongBean> getListByLoaiPhong() {
        
         Connection cons = DBConnect.getConnection();
+//        String sql = "SELECT NgayDang, COUNT(*) as so_luong FROM Thong_Tin_Tin GROUP BY NgayDang;";
         String sql ="WITH c as (SELECT Thong_Tin_Phong.MaLoaiPhong, LoaiPhong.TenLoaiPhong FROM Thong_Tin_Phong, LoaiPhong" +
 " WHERE Thong_Tin_Phong.MaLoaiPhong=LoaiPhong.MaLoaiPhong) SELECT c.TenLoaiPhong, count(*)  as so_luong" +
 " FROM c GROUP BY c.TenLoaiPhong";

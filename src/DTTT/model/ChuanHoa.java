@@ -66,5 +66,19 @@ public class ChuanHoa {
         }
         return dat;
     }
-    
+    public static String taoMaCode(){
+        Random ran=new Random();
+        int top=6;
+        char data=' ';
+        String dat="";
+
+        for (int i=0; i<top; i++) {
+          data=(char)(ran.nextInt(10)+48);
+          dat = dat + data;
+        }
+        return dat;
+    }
+    public static void main(String[] args) {
+        System.out.println("ma: " + taoMaCode());
+    }
 }

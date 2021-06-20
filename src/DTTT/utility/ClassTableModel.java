@@ -16,7 +16,6 @@ import DTTT.model.QuanHuyen;
 import DTTT.model.ThanhPho;
 import DTTT.model.ThongTinPhong;
 import DTTT.model.XaPhuong;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import static com.sun.tools.javac.code.TypeAnnotationPosition.field;
 import java.awt.Image;
 import java.io.IOException;
@@ -44,6 +43,9 @@ public class ClassTableModel {
     String TenXa = null;
     String TenQH = null;
     String TenTP = null;
+    XaPhuong xa = null;
+    QuanHuyen qh = null;
+    ThanhPho tp = null;
     String LoaiTP = null;
     String LoaiXa = null;
     String LoaiQH = null;
@@ -89,8 +91,6 @@ public class ClassTableModel {
         ThongTinTin tin;
         Date tinDate;
         String MaTinTin;
-        
-        
         for (int i = 0; i < listItem.size(); i++) {   
                
             tin = listItem.get(i); 
@@ -101,8 +101,6 @@ public class ClassTableModel {
             if( tinDate.getYear() - 2 == sysDate.getYear() ){
                 TinDAOImpl.setTrangThai(MaTinTin);
             }
-            
-            
             
             obj = new Object[columns];
             
@@ -127,8 +125,6 @@ public class ClassTableModel {
             LoaiXa = TinDAOImpl.setLoaiXa(MaXa);
             LoaiTP = TinDAOImpl.setLoaiTP(MaTP);
             LoaiQH = TinDAOImpl.setLoaiQH(MaQH);
-            
-            
             
             obj[3] ="  "+tin.getThongTinDiaChi()+", "+shortenXa(LoaiXa)+TinDAOImpl.setTenXa(MaXa)
                     +", "+shortenQuan(LoaiQH)+TinDAOImpl.setTenQH(MaQH)+", "

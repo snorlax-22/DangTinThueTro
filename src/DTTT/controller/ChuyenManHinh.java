@@ -1,16 +1,12 @@
 package DTTT.controller;
 
-import DTTT.view.theme;
 import DTTT.bean.DanhMuc;
 import DTTT.dao.KTTK;
 import DTTT.view.CapNhatMenu;
-import DTTT.view.CapNhatMenu1;
 import DTTT.view.DangNhap;
-import DTTT.view.DatLichHen;
 import DTTT.view.HienThiLichHen;
-import DTTT.view.HienThiLichHen1;
-import DTTT.view.TK;
 import DTTT.view.ThongKeJPanel;
+import DTTT.view.ThongTinTaiKhoan;
 import DTTT.view.TrangChinh;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +25,7 @@ import javax.swing.JOptionPane;
 
 
 public class ChuyenManHinh {
-    
+    ThongTinTaiKhoan dl = new ThongTinTaiKhoan();
     public ChuyenManHinh(){
         
     }
@@ -42,7 +38,7 @@ public class ChuyenManHinh {
         this.root = jpnRoot;
     }
     
-    public void setView() {
+    public void setView() throws IOException {
        
         root.removeAll();
         root.setLayout(new BorderLayout());
@@ -70,14 +66,14 @@ public class ChuyenManHinh {
     }
     
     class LabelEvent implements MouseListener{
-        
         private JPanel node;
         private JFrame jfr;
         private String loai;
         private JPanel jpnItem;
         private JLabel jlbItem;
+        ThongTinTaiKhoan dl = new ThongTinTaiKhoan();
         int thu;
-
+        int dem = 0;
         public LabelEvent(String loai, JPanel jpnItem, JLabel jlbItem) {
             this.loai = loai;
             this.jpnItem = jpnItem;
@@ -86,11 +82,14 @@ public class ChuyenManHinh {
         
       
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mousePressed(MouseEvent e) {
+            chon=loai;
+            jpnItem.setBackground(new Color(15,65,134));
+            jlbItem.setBackground(new Color(15,65,134));
             switch(loai){
                 case "LichHen":
                 {
-                        
+                    dem = 0;
                     if(KTTK.getTtk().length()!=0){
                         try {
                             node = new HienThiLichHen();
@@ -102,18 +101,24 @@ public class ChuyenManHinh {
                     else{
                             JOptionPane.showMessageDialog(null, "Bạn cần đăng nhập tài khoản cho chức năng này!");
                             thu=1;
+                        try {
                             node = new DangNhap();
+                        } catch (IOException ex) {
+                            Logger.getLogger(ChuyenManHinh.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 break;
                     
                 }
                 
                 case "ThongKe":
+                    dem = 0;
                     node = new ThongKeJPanel();
                     thu = 1;
                     break;
                 case "TrangChinh":
                 {
+                        dem = 0;
                     try {
                         node = new TrangChinh();
                     } catch (IOException ex) {
@@ -126,33 +131,53 @@ public class ChuyenManHinh {
                 
 
                 case "CapNhat":
+                    dem = 0;
                     if(KTTK.getTtk().length()!=0){
                         node = new CapNhatMenu();
                         thu=1;
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Bạn cần đăng nhập tài khoản cho chức năng này!");
-                        node = new DangNhap();
+                try {
+                    node = new DangNhap();
+                } catch (IOException ex) {
+                    Logger.getLogger(ChuyenManHinh.class.getName()).log(Level.SEVERE, null, ex);
+                }
                         thu=1;
                     }
                 break;                
-                case "DangNhap":                    
-                    if(KTTK.getTtk().length()!=0){
-                        int kq = JOptionPane.showConfirmDialog(null,"Bạn có muốn đăng xuất tài khoản '" + KTTK.getTtk() + "' không?","",JOptionPane.YES_NO_OPTION);
-                        if(kq == JOptionPane.YES_OPTION){
-                            KTTK.setTtk("");
-                            node = new DangNhap();thu=1;
-                            
+                case "DangNhap": 
+                        if(KTTK.getTtk().length()==0){
+                try {
+                    node = new DangNhap();
+                } catch (IOException ex) {
+                    Logger.getLogger(ChuyenManHinh.class.getName()).log(Level.SEVERE, null, ex);
+                }
+thu=1;
                         }
-                        else if(kq == JOptionPane.NO_OPTION)
-                            thu=0;
-                    }
-                    else{
-                        node = new DangNhap();thu=1;
-                        
-                    }
-                         node1 = new TK(KTTK.getTtk());                    
-                   
+                        else if(KTTK.getTtk().length()!=0){
+                try {
+                    
+                    dl.toFront();
+                    if(!dl.isShowing()){
+                    dl = new ThongTinTaiKhoan(KTTK.getTtk());
+                    dl.setVisible(false);
+                    dl.setBounds(10, 120, 500, 300);
+                    dl.setLocationRelativeTo(null);                                                                                                                      
+                    dl.setVisible(true);
+                    dl.setAutoRequestFocus(true);
+                    dl.toFront();           
+                    }                   
+                    
+                    
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(ChuyenManHinh.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChuyenManHinh.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                             
+                        }
                 break;
                
                 default: break;
@@ -171,7 +196,7 @@ public class ChuyenManHinh {
 
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mouseClicked(MouseEvent e) {
             chon=loai;
             jpnItem.setBackground(new Color(15,65,134));
             jlbItem.setBackground(new Color(15,65,134));
@@ -194,6 +219,8 @@ public class ChuyenManHinh {
                 jlbItem.setBackground(new Color(0,54,128));
             }
         }
+
+        
         
     }
     

@@ -2,20 +2,129 @@ package DTTT.view;
 import DTTT.dao.KiemTraDN;
 import DTTT.controller.ChuyenManHinh;
 import DTTT.dao.KTTK;
-import DTTT.view.ThemTKJDialog;
-import DTTT.view.theme;
+import java.awt.Container;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 
 
 
 public class DangNhap extends javax.swing.JPanel {
 
-    public DangNhap() {
+    public DangNhap() throws IOException {
         initComponents();
             this.setVisible(true);
+                Action action = new AbstractAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                         try {
+                            KiemTraDN dn = null;
+                            String mk = new String(jpwMK.getPassword());
+                            int i=dn.DangNhapTK(jtfTTK.getText(),mk);
+                            if(i==1){
+                                jpwMK.setText("");
+                            }
+                            else if(i==2){
+                                ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
+                                cmh.setView(new TrangChinh());
+                                KTTK.setTtk(jtfTTK.getText()); 
+                                
+                            }
+                            else if(i==3){
+                                jtfTTK.setText("");
+                                jpwMK.setText("");
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+                jpwMK.addActionListener( action );
+                
+                jbtnQuenMK.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        QuenMatKhau quenMK = new QuenMatKhau();
+                            quenMK.setVisible(false);
+                            quenMK.setBounds(10, 120, 650, 500);
+                            quenMK.setLocationRelativeTo(null);
+                            quenMK.setVisible(true);
+                        
+                    }
+                
+                });
+                jbtDangNhap.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            KiemTraDN dn = null;
+                            String mk = new String(jpwMK.getPassword());
+                            int i=dn.DangNhapTK(jtfTTK.getText(),mk);
+                            if(i==1){
+                                jpwMK.setText("");
+                            }
+                            else if(i==2){
+                                ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
+                                cmh.setView(new TrangChinh());
+                                KTTK.setTtk(jtfTTK.getText()); 
+                            }
+                            else if(i==3){
+                                jtfTTK.setText("");
+                                jpwMK.setText("");
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
+                jbtThemTK.addActionListener(new ActionListener(){ 
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ThemTKJDialog themTK = new ThemTKJDialog(null, true);
+                        themTK.setTitle("Thêm tài khoản");
+                        themTK.setResizable(true);
+                        themTK.setLocationRelativeTo(null);
+                        themTK.setVisible(true);
+                        if(themTK.kq == 1){
+                            ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
+                            cmh.setView(new theme());
+                            KTTK.setTtk(themTK.ttk);
+                        }
+                    }
+                });
+                jbtnEye.addActionListener(new ActionListener() {
+//                ImageIcon onEye = new ImageIcon("eyeOnBlack.png");
+//                ImageIcon offEye = new ImageIcon("eyeOffBlack.png");
+                Image onEye = ImageIO.read(getClass().getResource("eyeOnBlack.png"));
+                Image offEye = ImageIO.read(getClass().getResource("eyeOffBlack.png"));
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(jbtnEye.isSelected()){
+                        jbtnEye.setIcon(new ImageIcon(onEye));
+                        jpwMK.setEchoChar((char)0);
+                        jpwMK.requestFocus();
+                    }else{
+                        jbtnEye.setIcon(new ImageIcon(offEye));
+                        jpwMK.setEchoChar('*');
+                        jpwMK.requestFocus();
+                    }
+                    
+                }
+
+            
+            });
     }
 
     @SuppressWarnings("unchecked")
@@ -34,6 +143,8 @@ public class DangNhap extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jbtDangNhap = new javax.swing.JButton();
         jbtThemTK = new javax.swing.JButton();
+        jbtnQuenMK = new javax.swing.JButton();
+        jbtnEye = new javax.swing.JToggleButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setOpaque(false);
@@ -88,6 +199,16 @@ public class DangNhap extends javax.swing.JPanel {
 
         jpwMK.setBorder(null);
         jpwMK.setPreferredSize(new java.awt.Dimension(468, 37));
+        jpwMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jpwMKActionPerformed(evt);
+            }
+        });
+        jpwMK.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jpwMKKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpnMatKhauLayout = new javax.swing.GroupLayout(jpnMatKhau);
         jpnMatKhau.setLayout(jpnMatKhauLayout);
@@ -145,10 +266,21 @@ public class DangNhap extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jbtDangNhapMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtDangNhapMouseEntered(evt);
+            }
         });
         jbtDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtDangNhapActionPerformed(evt);
+            }
+        });
+        jbtDangNhap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jbtDangNhapKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jbtDangNhapKeyTyped(evt);
             }
         });
 
@@ -169,11 +301,54 @@ public class DangNhap extends javax.swing.JPanel {
             }
         });
 
+        jbtnQuenMK.setBackground(new java.awt.Color(255, 255, 255));
+        jbtnQuenMK.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jbtnQuenMK.setText("Quên mật khẩu");
+        jbtnQuenMK.setPreferredSize(new java.awt.Dimension(140, 50));
+        jbtnQuenMK.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtnQuenMKMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtnQuenMKMouseEntered(evt);
+            }
+        });
+        jbtnQuenMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnQuenMKActionPerformed(evt);
+            }
+        });
+        jbtnQuenMK.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jbtnQuenMKKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jbtnQuenMKKeyTyped(evt);
+            }
+        });
+
+        jbtnEye.setBackground(new java.awt.Color(248, 248, 255));
+        jbtnEye.setIcon(new javax.swing.ImageIcon(getClass().getResource("/DTTT/view/eyeOffBlack.png"))); // NOI18N
+        jbtnEye.setBorder(null);
+        jbtnEye.setOpaque(true);
+        jbtnEye.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEyeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 654, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(257, 257, 257)
+                .addComponent(jbtnQuenMK, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(285, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnEye, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -185,11 +360,16 @@ public class DangNhap extends javax.swing.JPanel {
                         .addComponent(jpnMatKhau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jpnTaiKhoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(65, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 339, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(198, 198, 198)
+                .addComponent(jbtnEye, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jbtnQuenMK, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -210,9 +390,9 @@ public class DangNhap extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(203, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,84 +415,70 @@ public class DangNhap extends javax.swing.JPanel {
     
     
     private void jbtDangNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtDangNhapMouseClicked
-        try {
-            KiemTraDN dn = null;
-            String mk = new String(jpwMK.getPassword());
-            int i=dn.DangNhapTK(jtfTTK.getText(),mk);
-            if(i==1){
-                jpwMK.setText("");
-            }
-            else if(i==2){
-                ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
-                cmh.setView(new TrangChinh());
-                KTTK.setTtk(jtfTTK.getText()); 
-            }
-            else if(i==3){
-                jtfTTK.setText("");
-                jpwMK.setText("");
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        
     }//GEN-LAST:event_jbtDangNhapMouseClicked
 
     private void jbtThemTKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtThemTKMouseClicked
 
-        ThemTKJDialog themTK = new ThemTKJDialog(null, true);
-        themTK.setTitle("Thêm tài khoản");
-        themTK.setResizable(true);
-        themTK.setLocationRelativeTo(null);
-        themTK.setVisible(true);
-        if(themTK.kq == 1){
-            ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
-            cmh.setView(new theme());
-            KTTK.setTtk(themTK.ttk);
-        }
+        
     }//GEN-LAST:event_jbtThemTKMouseClicked
 
     private void jbtDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDangNhapActionPerformed
         // TODO add your handling code here:
-        try {
-            KiemTraDN dn = null;
-            String mk = new String(jpwMK.getPassword());
-            int i=dn.DangNhapTK(jtfTTK.getText(),mk);
-            if(i==1){
-                jpwMK.setText("");
-            }
-            else if(i==2){
-                ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
-                cmh.setView(new TrangChinh());
-                KTTK.setTtk(jtfTTK.getText()); 
-//                MainScreen.jlbTaiKhoan.setText(KTTK.setTtk());
-                
-            }
-            else if(i==3){
-                jtfTTK.setText("");
-                jpwMK.setText("");
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } 
+       
         
     }//GEN-LAST:event_jbtDangNhapActionPerformed
 
     private void jbtThemTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemTKActionPerformed
         // TODO add your handling code here:
-        ThemTKJDialog themTK = new ThemTKJDialog(null, true);
-        themTK.setTitle("Thêm tài khoản");
-        themTK.setResizable(true);
-        themTK.setLocationRelativeTo(null);
-        themTK.setVisible(true);
-        if(themTK.kq == 1){
-            ChuyenManHinh cmh = new ChuyenManHinh(jPanel1);
-            cmh.setView(new theme());
-            KTTK.setTtk(themTK.ttk);
-        }
+        
     }//GEN-LAST:event_jbtThemTKActionPerformed
+
+    private void jbtDangNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtDangNhapKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtDangNhapKeyPressed
+
+    private void jbtDangNhapMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtDangNhapMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtDangNhapMouseEntered
+
+    private void jbtDangNhapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtDangNhapKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtDangNhapKeyTyped
+
+    private void jpwMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpwMKActionPerformed
+        // TODO add your handling code here:
+        this.jbtDangNhap.requestFocus();
+    }//GEN-LAST:event_jpwMKActionPerformed
+
+    private void jpwMKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpwMKKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jpwMKKeyPressed
+
+    private void jbtnQuenMKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnQuenMKMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnQuenMKMouseClicked
+
+    private void jbtnQuenMKMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnQuenMKMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnQuenMKMouseEntered
+
+    private void jbtnQuenMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnQuenMKActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbtnQuenMKActionPerformed
+
+    private void jbtnQuenMKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtnQuenMKKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnQuenMKKeyPressed
+
+    private void jbtnQuenMKKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtnQuenMKKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnQuenMKKeyTyped
+
+    private void jbtnEyeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEyeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnEyeActionPerformed
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -323,6 +489,8 @@ public class DangNhap extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton jbtDangNhap;
     private javax.swing.JButton jbtThemTK;
+    private javax.swing.JToggleButton jbtnEye;
+    private javax.swing.JButton jbtnQuenMK;
     private javax.swing.JPanel jpnMatKhau;
     private javax.swing.JPanel jpnTaiKhoan;
     private javax.swing.JPasswordField jpwMK;

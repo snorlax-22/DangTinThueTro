@@ -9,9 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.Scanner;
 import java.text.SimpleDateFormat;
 /**
  *
@@ -93,7 +90,7 @@ public class DatLicHenImpl {
             while(rs.next()){
                 String TKTam = ChuanHoa.xoaKhoangTrang(rs.getString("TaiKhoan"));
                 if (TKTam.equals(taiKhoan)) {
-                    tk = ChuanHoa.xoaKhoangTrang(rs.getString("HoTen"));
+                    tk = rs.getString("HoTen");
                 }
             }
         } catch (SQLException e) {
@@ -188,9 +185,7 @@ public class DatLicHenImpl {
         while(rsTin.next()){
                 String maTinTam = ChuanHoa.xoaKhoangTrang(rsTin.getString("MaTin"));
                 String taiKhoanTam = ChuanHoa.xoaKhoangTrang(rsTin.getString("TaiKhoan"));
-                
                 if(maTinLicHen.equals(maTinTam) && KTTK.getTtk().equals(taiKhoanTam)){
-                    
                         return 1;
                 }
             }
@@ -248,6 +243,47 @@ public class DatLicHenImpl {
             }
         }
         return diaChi;
+    }
+    public static String layMailTuMaTin(String maTin) throws SQLException{
+        String mail = null;
+        Connection conn = DBConnect.getConnection();
+        String sql = "SELECT * FROM Thong_Tin_Tin Where MaTin = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maTin);
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+              mail = layMailTaiKhoan(rs.getString("TaiKhoan"));
+            }  
+            ps.close();
+            conn.close(); 
+            return mail;
+    }
+    public static String layMailTaiKhoan(String taiKhoan) throws SQLException{
+        String mail = null;
+        Connection conn = DBConnect.getConnection();
+        String sql = "SELECT * FROM Tai_Khoan Where TaiKhoan = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, taiKhoan);
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+              mail = ChuanHoa.xoaKhoangTrang(rs.getString("Gmail"));
+            }  
+            ps.close();
+            conn.close(); 
+            return mail;
+    }
+    public static String getDateTrongTin(String maTin) throws SQLException{
+        String date = null;
+        Connection cnn = DBConnect.getConnection();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        String sql = "select * from Thong_Tin_Tin where MaTin = ?";
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setString(1, maTin);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            date = formatter1.format(rs.getDate("NgayDang"));
+        }
+        return date;
     }
     public static int laySoPhong(String maTin) throws SQLException{
         int soPhong = 0;
@@ -370,7 +406,6 @@ public class DatLicHenImpl {
         while(rsTin.next()){
                 String maTinTam = ChuanHoa.xoaKhoangTrang(rsTin.getString("MaTin"));
                 if(maTin.equals(maTinTam)){
-                    TenPhong = rsTin.getString("TenPhong");
                     maLoaiPhong = rsTin.getString("MaLoaiPhong");
                     tenLoaiPhong = layLoaiPhong(maLoaiPhong);
                     soPhong = rsTin.getInt("SoPhong");
@@ -411,7 +446,7 @@ public class DatLicHenImpl {
         return check;
     }
     public static void main(String[] args) throws SQLException {
-        System.out.println("check: " + checkTrungTaiKhoanMaTinLichHen("1", "5"));
+        System.out.println("mail: " + layMailTuMaTin("1"));
     }
     
 }

@@ -8,6 +8,9 @@ package DTTT.view;
 import DTTT.dao.DBConnect;
 import DTTT.dao.KTTK;
 import DTTT.dao.DatLicHenImpl;
+import DTTT.Maill.Mail;
+import DTTT.dao.TaiKhoanDB;
+import DTTT.model.TaiKhoan;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,11 +29,17 @@ import javax.swing.JOptionPane;
  * @author Admin
  */
 
-public class DatLichHen extends javax.swing.JDialog {
+public final class DatLichHen extends javax.swing.JDialog {
 
     /**
      * Creates new form DatLichHen
      */
+    
+    private String mailNhan;
+    private String mailSucject;
+    private String mailMgs;
+    private String ngayDangTin;
+    private String hoTenNguoiHen;
     public DatLichHen() {
         initComponents();
     }
@@ -120,13 +129,34 @@ public class DatLichHen extends javax.swing.JDialog {
                                             JOptionPane.YES_NO_OPTION);
                             if(check == JOptionPane.YES_OPTION){
                                 DTTT.dao.DatLicHenImpl.themLichHen(lichhen);
-                                DatLicHenImpl.truSoPhong(maTin);
+                                String mail = DatLicHenImpl.layMailTuMaTin(lichhen.getMaTin());
+                                TaiKhoan tk = new TaiKhoan();
+                                TaiKhoan tkUser = new TaiKhoan();
+                                tk = TaiKhoanDB.getTTTaiKhoanQuaMail(mail);
+                                tkUser = TaiKhoanDB.luuTTTaiKhoan(lichhen.getTaiKhoan());
+                                mailNhan = mail;
+                                mailSucject = "Xin chào " + tk.getHoTen()+"! Bạn có thông báo mới";
+                                mailMgs =  "Bạn vừa nhận được một lịch hẹn từ tin bạn đã đăng ngày "+ 
+                                        DatLicHenImpl.getDateTrongTin(lichhen.getMaTin())+". \n"+
+                                           "Thông tin người hẹn:\n"+
+                                                            "\t\t\t\tHọ tên: " + tkUser.getHoTen() + "\n"+
+                                                            "\t\t\t\tSố điện thoại: " + tkUser.getSdt()+ "\n"+
+                                                            "\t\t\t\tEmail: " + tkUser.getGmail()+ "\n"+
+                                                    "\tThời gian hẹn:" + formatter1.format(lichhen.getThoiGianHen()) + "\n"+
+                                                    "\tĐịa điểm hẹn:" + lichhen.getMoTa() +" "+DatLicHenImpl.layDiaChiHen(lichhen.getMaXa())+ "\n"+
+                                                    "Vui lòng truy cập ứng dụng để xem tin chi tiết!\n"+
+                                            "Hãy sắp xếp thời gian để gặp người hẹn nhé!\n"+
+                                            "Chúc bạn một ngày vui vẻ.\n" +
+                                            "==========Đội ngũ DangTinNhaTro==========";
+                                Mail.sendMail(mailNhan, mailSucject, mailMgs);
                                 JOptionPane.showMessageDialog(rootPane, "Đặt lịch hẹn thành công!");
                                 Container frame = jbtnXacNhan.getParent();
                                 do{
                                     frame = frame.getParent(); 
                                 }while (!(frame instanceof DatLichHen));  
-                                ((DatLichHen) frame).dispose();         
+                                ((DatLichHen) frame).dispose();
+                                
+                                
                             } 
                         }else{
                             JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn địa điểm hẹn");
@@ -303,8 +333,7 @@ public class DatLichHen extends javax.swing.JDialog {
             }
         });
 
-        jDate_LichHen.setDateFormatString("dd/MM/yyyy");
-        jDate_LichHen.setName("jDate_LichHen"); // NOI18N
+        jDate_LichHen.setDateFormatString("dd/MM/yyy");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -316,7 +345,7 @@ public class DatLichHen extends javax.swing.JDialog {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jDate_LichHen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jtbnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)

@@ -172,7 +172,7 @@
                               <Component id="jLabel3" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jDate_LichHen" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -258,8 +258,7 @@
                 </Component>
                 <Component class="com.toedter.calendar.JDateChooser" name="jDate_LichHen">
                   <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
-                    <Property name="name" type="java.lang.String" value="jDate_LichHen" noResource="true"/>
+                    <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyy"/>
                   </Properties>
                 </Component>
               </SubComponents>

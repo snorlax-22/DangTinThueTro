@@ -7,6 +7,7 @@ public class TaiKhoan {
     private String sdt;
     private String tenTK;
     private String mk;
+    private String gmail;
 
     public String getHoTen() {
         return hoTen;
@@ -38,6 +39,12 @@ public class TaiKhoan {
 
     public void setMk(String mk) {
         this.mk = mk;
+    }
+    public void setGmail(String gmail){
+        this.gmail = gmail;
+    }
+    public String getGmail(){
+        return gmail;
     }
     
 }

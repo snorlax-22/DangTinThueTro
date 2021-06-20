@@ -15,10 +15,13 @@ public class DBConnect {
             conn = DriverManager.getConnection(url,user,pass);
             System.out.println("SQL connected!");
         }
-        catch(ClassNotFoundException |SQLException e){
+        catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();
             System.out.println("SQL ket noi ko thanh cong!");
         }
         return conn;
+    }
+    public static void main(String[] args) {
+        System.out.println(getConnection());
     }
 }

@@ -38,14 +38,9 @@ import DTTT.utility.MultiLineTableCellRenderer;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -119,7 +114,7 @@ public class HienThiLichHen extends javax.swing.JPanel {
                             // set thông số cho jdialog
                                 jdialog.setTitle(TieuDe);
                                 jdialog.setVisible(false);
-                                jdialog.setBounds(90, 90, 800, 490);
+                                jdialog.setBounds(90, 90, 700, 420);
                                 jdialog.setLocationRelativeTo(null);
                                 jdialog.setVisible(true);
                         }
@@ -323,6 +318,7 @@ public class HienThiLichHen extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
+        jTblLichHen.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jTblLichHen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},

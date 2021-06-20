@@ -6,6 +6,7 @@
 package DTTT.controller;
 
 import DTTT.model.Anh;
+import DTTT.model.ChuanHoa;
 import DTTT.model.LoaiPhong;
 import DTTT.model.ThongTinPhong;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ThongTinPhongController {
 //    List<LoaiPhong> listLP = null;
     private JTextField jtfGiaPhong,jtfMaTin,
             jtfDienTich,jtfSoPhong,jtfDieuHoa,jtfLoaiPhong;
-    private JTextArea jtaMoTa;
+    private java.awt.TextArea jtaMoTa;
     private JLabel jlbHinhAnh;
     private ThongTinPhong tinphong = null;
     private LoaiPhong lp = null;
@@ -31,7 +32,7 @@ public class ThongTinPhongController {
     
   
     
-    public ThongTinPhongController(JTextField jtfMaTin,JTextField jtfDienTich,JTextField jtfGiaPhong, JTextField jtfSoPhong, JTextField jtfDieuHoa, JTextField jtfLoaiPhong, JTextArea jtaMoTa,JLabel jlbHinhAnh) {
+    public ThongTinPhongController(JTextField jtfMaTin,JTextField jtfDienTich,JTextField jtfGiaPhong, JTextField jtfSoPhong, JTextField jtfDieuHoa, JTextField jtfLoaiPhong, java.awt.TextArea jtaMoTa,JLabel jlbHinhAnh) {
         
         this.jtfDienTich = jtfDienTich;
         this.jtfGiaPhong = jtfGiaPhong;
@@ -43,7 +44,7 @@ public class ThongTinPhongController {
         this.jlbHinhAnh = jlbHinhAnh;
     }
     
-    public ThongTinPhongController(JTextField jtfMaTin,JTextField jtfDienTich,JTextField jtfGiaPhong, JTextField jtfSoPhong, JTextField jtfDieuHoa, JTextField jtfLoaiPhong, JTextArea jtaMoTa) {
+    public ThongTinPhongController(JTextField jtfMaTin,JTextField jtfDienTich,JTextField jtfGiaPhong, JTextField jtfSoPhong, JTextField jtfDieuHoa, JTextField jtfLoaiPhong, java.awt.TextArea jtaMoTa) {
         this.jtfDienTich = jtfDienTich;
         this.jtfGiaPhong = jtfGiaPhong;
         this.jtfSoPhong = jtfSoPhong;
@@ -67,10 +68,10 @@ public class ThongTinPhongController {
    public void setView(ThongTinPhong tinphong){
         
         this.tinphong = tinphong;
-        jtfDienTich.setText(tinphong.getDienTich());
-        jtfGiaPhong.setText(tinphong.getGiaPhong());
+        jtfDienTich.setText(tinphong.getDienTich() + " m2");
+        jtfGiaPhong.setText(tinphong.getGiaPhong()+" vnđ");
         jtfSoPhong.setText(Integer.toString(tinphong.getSoPhong()));
-        jtfDieuHoa.setText(tinphong.getDieuHoa());
+        jtfDieuHoa.setText(ChuanHoa.xoaKhoangTrang(tinphong.getDieuHoa()));
         jtfLoaiPhong.setText(lp.getTenLoaiPhong());
         jtaMoTa.setText(tinphong.getMoTa());
         jtfMaTin.setText(tinphong.getMaTin());
@@ -80,10 +81,10 @@ public class ThongTinPhongController {
     public void setView(ThongTinPhong tinphong, LoaiPhong lp){
         
         this.tinphong = tinphong;
-        jtfDienTich.setText(tinphong.getDienTich());
-        jtfGiaPhong.setText(tinphong.getGiaPhong());
+        jtfDienTich.setText(tinphong.getDienTich()+" m2");
+        jtfGiaPhong.setText(tinphong.getGiaPhong()+" vnđ");
         jtfSoPhong.setText(Integer.toString(tinphong.getSoPhong()));
-        jtfDieuHoa.setText(tinphong.getDieuHoa());
+        jtfDieuHoa.setText(ChuanHoa.xoaKhoangTrang(tinphong.getDieuHoa()));
         jtfLoaiPhong.setText(lp.getTenLoaiPhong());
         jtaMoTa.setText(tinphong.getMoTa());
         jtfMaTin.setText(tinphong.getMaTin());
@@ -93,10 +94,10 @@ public class ThongTinPhongController {
     public void setView(ThongTinPhong tinphong, LoaiPhong lp, String MaTinTin){
         jtfMaTin.setText(tinphong.getMaTin());
         this.tinphong = tinphong;
-        jtfDienTich.setText(tinphong.getDienTich());
-        jtfGiaPhong.setText(tinphong.getGiaPhong());
+        jtfDienTich.setText(tinphong.getDienTich()+" m2");
+        jtfGiaPhong.setText(tinphong.getGiaPhong()+" vnđ");
         jtfSoPhong.setText(Integer.toString(tinphong.getSoPhong()));
-        jtfDieuHoa.setText(tinphong.getDieuHoa());
+        jtfDieuHoa.setText(ChuanHoa.xoaKhoangTrang(tinphong.getDieuHoa()));
         jtfLoaiPhong.setText(lp.getTenLoaiPhong());
         jtaMoTa.setText(tinphong.getMoTa());
         tinphong.getMaTin();

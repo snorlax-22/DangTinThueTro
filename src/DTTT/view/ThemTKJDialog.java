@@ -1,13 +1,13 @@
 package DTTT.view;
-
+import DTTT.dao.KTTK;
 import DTTT.dao.TaiKhoanDB;
 import javax.swing.JOptionPane;
 import DTTT.model.ChuanHoa;
 import DTTT.model.TaiKhoan;
+import java.awt.Color;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 public class ThemTKJDialog extends javax.swing.JDialog {
 
     int kq = 0;
@@ -16,9 +16,97 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         jbtQuayLai.setVisible(true);
-        jbtQuayLai.setVisible(true);     
+        jbtQuayLai.setVisible(true);
+        
     }
-
+    private void jbtDangKiMouseClicked(java.awt.event.MouseEvent evt) {                                       
+        TaiKhoan tk = new TaiKhoan();
+        String mk = new String(jpwMK.getPassword());
+        String xnmk = new String(jpwXNMK.getPassword());
+        jtfHoTen5.setText(ChuanHoa.ChuanHoaHoTen(jtfHoTen5.getText()));
+        if(jtfHoTen5.getText().length()==0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Họ Tên'");
+        }
+        else if(jtfSDT.getText().length() == 0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Số Điện Thoại'");
+        }
+        else if(jtfTenDN.getText().length() == 0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Tên Đăng Nhập'");
+            jtfTenDN.setText("");
+        }
+        else if(jtftGmail.getText().length() == 0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Gmail'");
+            jtftGmail.setText("");
+        }
+        else if(mk.length() == 0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Mật khẩu'");
+        }
+         else if(xnmk.length() == 0){
+            JOptionPane.showMessageDialog(null,"Không được để trống 'Xác nhận mật khẩu'");
+        }
+//         
+//        else if(!jtfHoTen5.getText().matches("^[a-zA-Z ]{1,29}$")){
+//            JOptionPane.showMessageDialog(null,"Họ tên không hợp lệ!");
+//            jtfHoTen5.setText("");
+//        }
+        else if(!jtftGmail.getText().matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
+            JOptionPane.showMessageDialog(null,"Mail không hợp lệ!");
+            jtftGmail.setText("");
+        }
+        else if(!ChuanHoa.ChuanHoaSDT(jtfSDT.getText())){
+            JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ!");
+            jtfSDT.setText("");
+        }
+        else if(jtfTenDN.getText().length()<4){
+            JOptionPane.showMessageDialog(null, "Tên tài khoản quá ngắn!");
+            jtfTenDN.setText("");
+        }
+        else if(mk.length()<6){
+            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 6 kí tự!");
+            jpwMK.setText("");
+            jpwXNMK.setText("");
+        }
+        else if(mk.compareToIgnoreCase(xnmk)!=0){
+            JOptionPane.showMessageDialog(null, "Mật khẩu không khớp!");
+            jpwMK.setText("");
+            jpwXNMK.setText("");
+        }
+        else{
+            tk.setHoTen(jtfHoTen5.getText());
+            tk.setSdt(jtfSDT.getText());
+            tk.setTenTK(jtfTenDN.getText());
+            tk.setMk(mk);
+            tk.setGmail(jtftGmail.getText());
+            
+            try {
+                if(TaiKhoanDB.kTTKTonTai(tk.getTenTK())==0){
+                    TaiKhoanDB.themTaiKhoan(tk);
+                    JOptionPane.showMessageDialog(null, "Đã thêm tài khoản!");
+                    this.dispose();
+                    kq=1;
+                    ttk = tk.getTenTK();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Tên TK đã được sử dụng! Vui lòng dùng tên TK khác");
+                    jtfTenDN.setText("");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ThemTKJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
+    }
+    
+//    private void jtfSDTKeyTyped(java.awt.event.KeyEvent evt) {                                
+//        char c = evt.getKeyChar();
+//        if(!Character.isDigit(c)){
+//            evt.consume();
+//        }
+//        if(jtfSDT.getText().length() >= 10){
+//
+//            evt.consume();
+//        }
+//    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -43,6 +131,9 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         jpwXNMK = new javax.swing.JPasswordField();
         jbtDangKi1 = new javax.swing.JButton();
         jbtQuayLai = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jtftGmail = new javax.swing.JTextField();
 
         jLabel6.setText("jLabel6");
 
@@ -63,9 +154,14 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         jLabel12.setText("Họ tên:");
 
         jtfHoTen5.setBorder(null);
-        jtfHoTen5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtfHoTen5KeyTyped(evt);
+        jtfHoTen5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfHoTen5FocusLost(evt);
+            }
+        });
+        jtfHoTen5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfHoTen5ActionPerformed(evt);
             }
         });
 
@@ -132,11 +228,6 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         jLabel3.setText("Tên tài khoản:");
 
         jtfTenDN.setBorder(null);
-        jtfTenDN.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtfTenDNKeyTyped(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -166,11 +257,6 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         jLabel4.setText("Mật khẩu:");
 
         jpwMK.setBorder(null);
-        jpwMK.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jpwMKKeyTyped(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -201,11 +287,6 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         jLabel5.setPreferredSize(new java.awt.Dimension(140, 17));
 
         jpwXNMK.setBorder(null);
-        jpwXNMK.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jpwXNMKKeyTyped(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -253,6 +334,36 @@ public class ThemTKJDialog extends javax.swing.JDialog {
             }
         });
 
+        jPanel8.setBackground(new java.awt.Color(242, 242, 255));
+        jPanel8.setPreferredSize(new java.awt.Dimension(550, 50));
+        jPanel8.setVerifyInputWhenFocusTarget(false);
+
+        jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel10.setText("Gmail:");
+
+        jtftGmail.setBorder(null);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jtftGmail, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtftGmail)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -260,20 +371,23 @@ public class ThemTKJDialog extends javax.swing.JDialog {
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                                .addComponent(jbtQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jbtDangKi1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                                    .addComponent(jbtQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jbtDangKi1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
@@ -286,14 +400,16 @@ public class ThemTKJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbtQuayLai, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(jbtDangKi1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtDangKi1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -310,13 +426,10 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -328,6 +441,7 @@ public class ThemTKJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jbtDangKi1MouseClicked
 
     private void jbtQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtQuayLaiActionPerformed
+        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jbtQuayLaiActionPerformed
 
@@ -337,6 +451,7 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         String mk = new String(jpwMK.getPassword());
         String xnmk = new String(jpwXNMK.getPassword());
         jtfHoTen5.setText(ChuanHoa.ChuanHoaHoTen(jtfHoTen5.getText()));
+        System.out.println("");
         if(jtfHoTen5.getText().length()==0){
             JOptionPane.showMessageDialog(null,"Không được để trống 'Họ Tên'");
         }
@@ -350,8 +465,16 @@ public class ThemTKJDialog extends javax.swing.JDialog {
         else if(mk.length() == 0){
             JOptionPane.showMessageDialog(null,"Không được để trống 'Mật khẩu'");
         }
-        else if(xnmk.length() == 0){
+         else if(xnmk.length() == 0){
             JOptionPane.showMessageDialog(null,"Không được để trống 'Xác nhận mật khẩu'");
+        }
+//        else if(!jtfHoTen5.getText().matches("^[a-zA-Z ]{1,29}$")){
+//            JOptionPane.showMessageDialog(null,"Họ tên không hợp lệ!");
+//            jtfHoTen5.setText("");
+//        }
+        else if(!jtftGmail.getText().matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
+            JOptionPane.showMessageDialog(null,"Mail không hợp lệ!");
+            jtftGmail.setText("");
         }
         else if(!ChuanHoa.ChuanHoaSDT(jtfSDT.getText())){
             JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ!");
@@ -376,7 +499,7 @@ public class ThemTKJDialog extends javax.swing.JDialog {
             tk.setSdt(jtfSDT.getText());
             tk.setTenTK(jtfTenDN.getText());
             tk.setMk(mk);
-            
+            tk.setGmail(jtftGmail.getText());
             try {
                 if(TaiKhoanDB.kTTKTonTai(tk.getTenTK())==0){
                     TaiKhoanDB.themTaiKhoan(tk);
@@ -390,7 +513,7 @@ public class ThemTKJDialog extends javax.swing.JDialog {
                     jtfTenDN.setText("");
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                Logger.getLogger(ThemTKJDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
              
         }
@@ -403,45 +526,25 @@ public class ThemTKJDialog extends javax.swing.JDialog {
             evt.consume();
         }
         if(jtfSDT.getText().length() >= 10){
+
             evt.consume();
         }
     }//GEN-LAST:event_jtfSDTKeyTyped
 
-    private void jtfHoTen5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfHoTen5KeyTyped
-        char c = evt.getKeyChar();
-        if (c != ' ') {
-            if (!Character.isLetter(c)) {
-                evt.consume();
-            }
-        }
+    private void jtfHoTen5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfHoTen5ActionPerformed
+        // TODO add your handling code here:
+        String chuanHoa = ChuanHoa.ChuanHoaHoTen(jtfHoTen5.getText());
+        jtfHoTen5.setText(chuanHoa);
+    }//GEN-LAST:event_jtfHoTen5ActionPerformed
 
-        if (jtfHoTen5.getText().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtfHoTen5KeyTyped
-
-    private void jtfTenDNKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTenDNKeyTyped
-        if (jtfTenDN.getText().length() >= 10) {
-            JOptionPane.showMessageDialog(null, "Tên đăng nhập tối đa 10 kí tự!");
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtfTenDNKeyTyped
-
-    private void jpwMKKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpwMKKeyTyped
-        if (new String(jpwMK.getPassword()).length() >= 10) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu tối đa 10 kí tự!");
-            evt.consume();
-        }
-    }//GEN-LAST:event_jpwMKKeyTyped
-
-    private void jpwXNMKKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpwXNMKKeyTyped
-        if (new String(jpwXNMK.getPassword()).length() >= 10) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu tối đa 10 kí tự!");
-            evt.consume();
-        }
-    }//GEN-LAST:event_jpwXNMKKeyTyped
+    private void jtfHoTen5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfHoTen5FocusLost
+        // TODO add your handling code here:
+        String chuanHoa = ChuanHoa.ChuanHoaHoTen(jtfHoTen5.getText());
+        jtfHoTen5.setText(chuanHoa);
+    }//GEN-LAST:event_jtfHoTen5FocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -455,6 +558,7 @@ public class ThemTKJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JButton jbtDangKi1;
     private javax.swing.JButton jbtQuayLai;
     private javax.swing.JPasswordField jpwMK;
@@ -462,5 +566,6 @@ public class ThemTKJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField jtfHoTen5;
     private javax.swing.JTextField jtfSDT;
     private javax.swing.JTextField jtfTenDN;
+    private javax.swing.JTextField jtftGmail;
     // End of variables declaration//GEN-END:variables
 }
