@@ -626,6 +626,7 @@ public boolean ktTT() throws SQLException{
         int kq = JOptionPane.showConfirmDialog(null,"Bạn có muốn đăng xuất tài khoản '" + KTTK.getTtk() + "' không?","",JOptionPane.YES_NO_OPTION);
         if(kq == JOptionPane.YES_OPTION){
                             KTTK.setTtk("");
+                            JOptionPane.showMessageDialog(this, "Đăng xuất thành công !");
                             this.dispose();
                         }
     }//GEN-LAST:event_jbtnDangXuatActionPerformed
